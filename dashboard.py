@@ -95,8 +95,7 @@ if len(raw_curve) > 0:
 
     # 2. Map the 257 points to the 1000nm - 5000nm range
     # np.linspace creates exactly 257 values starting at 1000 and ending at 5000
-    wavelengths = np.linspace(0, 257, len(fixed_curve))
-
+    wavelengths = np.arange(len(fixed_curve))
     df = pd.DataFrame({
         "Wavelength": wavelengths,
         "PSD": fixed_curve
