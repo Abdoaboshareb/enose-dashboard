@@ -3,7 +3,7 @@ import requests
 import time
 import pandas as pd
 import plotly.express as px
-
+import numpy as np
 # --- CONFIGURATION ---
 # Replace with your Hugging Face URL
 API_URL = "https://abdulrahman-266-enose-api.hf.space/latest"
