@@ -41,10 +41,18 @@ st.markdown("Monitoring live chemical signatures and predicting Quality using AI
 # --- SIDEBAR / CONTROL ---
 with st.sidebar:
     st.header("Controls")
-    # THE BUTTON (UI only for now)
     if st.button("🚀 Request New Scan", use_container_width=True):
-        st.info("Scan command sent! (Logic not yet implemented)")
-
+        try:
+            # Tell the API to set scan_requested to True
+            # Replace URL with your actual HF URL
+            resp = requests.post("https://abdulrahman-266-enose-api.hf.space/trigger_scan")
+            if resp.status_code == 200:
+                st.success("Scan command sent!")
+            else:
+                st.error("Failed to send command.")
+        except Exception as e:
+            st.error(f"Error: {e}")
+            
 def fetch_latest_data():
     try:
         response = requests.get(API_URL, timeout=5)
