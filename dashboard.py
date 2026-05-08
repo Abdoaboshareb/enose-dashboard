@@ -132,7 +132,7 @@ if len(raw_curve) > 0:
         
             # Force axis range
             range=[0, 256]
-        )
+        ),
         yaxis=dict(
             gridcolor="#333", 
             showgrid=True,
