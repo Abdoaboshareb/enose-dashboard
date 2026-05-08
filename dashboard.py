@@ -89,31 +89,55 @@ st.divider()
 
 # --- CHART SECTION ---
 if len(raw_curve) > 0:
+    # 1. Fix the "Flipped" view: 
+    # We reverse the data points so the first index becomes the last and vice-versa
+    fixed_curve = raw_curve[::-1] 
+
+    # 2. Map the 257 points to the 1000nm - 5000nm range
+    # np.linspace creates exactly 257 values starting at 1000 and ending at 5000
+    wavelengths = np.linspace(1000, 5000, len(fixed_curve))
+
     df = pd.DataFrame({
-        "Time": range(len(raw_curve)),
-        "Sensor Reading": raw_curve
+        "Wavelength": wavelengths,
+        "PSD": fixed_curve
     })
 
+    # 3. Build the Chart
     fig = px.line(
         df, 
-        x="Time", 
-        y="Sensor Reading", 
-        title="Live Chemical Signature (Spectral Array)",
-        labels={"Sensor Reading": "Amplitude", "Time": "Sensor Index (0-256)"},
+        x="Wavelength", 
+        y="PSD", 
+        title="Live Chemical Signature (Spectral Analysis)",
+        labels={
+            "PSD": "PSD (A.U.)", 
+            "Wavelength": "Wavelength (nm)"
+        },
         template="plotly_dark"
     )
-    fig.update_traces(line=dict(color="#00FFAA", width=2))
+
+    # Styling the line and axes
+    fig.update_traces(line=dict(color="#00FFAA", width=2.5))
     
-    # Add a slight glow effect to the line
     fig.update_layout(
         hovermode="x unified",
-        margin=dict(l=20, r=20, t=50, b=20)
+        margin=dict(l=20, r=20, t=50, b=20),
+        xaxis=dict(
+            gridcolor="#333", 
+            showgrid=True,
+            zeroline=False,
+            dtick=500  # Shows a mark every 500nm
+        ),
+        yaxis=dict(
+            gridcolor="#333", 
+            showgrid=True,
+            zeroline=False
+        )
     )
 
     st.plotly_chart(fig, use_container_width=True, key="live_sensor_chart")
+
 else:
     st.info("⏳ Waiting for the sensor to emit gas signatures...")
-
 # --- HISTORY SECTION ---
 st.subheader("📜 Recent Scan History")
 
