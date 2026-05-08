@@ -136,7 +136,7 @@ if history:
         color = "green" if res == "Good" else "red"
         col1.markdown(f":{color}[{res}]")
         
-        col2.write(item.get("scent", "Unknown"))
+        col2.write("To be implemented")
         
         # Format the time to be readable (HH:mm:ss)
         raw_time = item.get("timestamp", "")
