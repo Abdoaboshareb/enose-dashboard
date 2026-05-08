@@ -114,6 +114,41 @@ if len(raw_curve) > 0:
 else:
     st.info("⏳ Waiting for the sensor to emit gas signatures...")
 
+# --- HISTORY SECTION ---
+st.subheader("📜 Recent Scan History")
+
+history = data.get("history", [])
+
+if history:
+    # Create a clean table-like view using Streamlit columns
+    # Header
+    hcol1, hcol2, hcol3 = st.columns([1, 2, 2])
+    hcol1.markdown("**Result**")
+    hcol2.markdown("**Scent**")
+    hcol3.markdown("**Time**")
+    st.divider()
+
+    for item in history:
+        col1, col2, col3 = st.columns([1, 2, 2])
+        
+        # Style the result (Good/Bad)
+        res = item.get("prediction", "N/A")
+        color = "green" if res == "Good" else "red"
+        col1.markdown(f":{color}[{res}]")
+        
+        col2.write(item.get("scent", "Unknown"))
+        
+        # Format the time to be readable (HH:mm:ss)
+        raw_time = item.get("timestamp", "")
+        try:
+            clean_time = raw_time.split("T")[1].split(".")[0]
+        except:
+            clean_time = raw_time
+            
+        col3.write(clean_time)
+else:
+    st.info("No scan history available yet.")
+
 # --- AUTO REFRESH ---
 time.sleep(REFRESH_RATE)
 st.rerun()
