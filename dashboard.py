@@ -109,7 +109,7 @@ if len(raw_curve) > 0:
         title="Live Chemical Signature (Spectral Analysis)",
         labels={
             "PSD": "PSD (A.U.)", 
-            "Wavelength": "Wavelength index (ranged from 1000 to 5000 nm)"
+            "Wavelength": "Sensor reading index"
         },
         template="plotly_dark"
     )
@@ -120,12 +120,19 @@ if len(raw_curve) > 0:
     fig.update_layout(
         hovermode="x unified",
         margin=dict(l=20, r=20, t=50, b=20),
-        xaxis=dict(
-            gridcolor="#333", 
+         xaxis=dict(
+            gridcolor="#333",
             showgrid=True,
             zeroline=False,
-            dtick=500  # Shows a mark every 500nm
-        ),
+        
+            # Show axis numbers
+            tickmode="linear",
+            tick0=0,
+            dtick=25,
+        
+            # Force axis range
+            range=[0, 256]
+        )
         yaxis=dict(
             gridcolor="#333", 
             showgrid=True,
