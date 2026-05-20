@@ -4,6 +4,9 @@ import time
 import pandas as pd
 import plotly.express as px
 import numpy as np
+from datetime import datetime
+from zoneinfo import ZoneInfo
+
 # --- CONFIGURATION ---
 # Replace with your Hugging Face URL
 API_URL = "https://abdulrahman-266-enose-api.hf.space/latest"
@@ -71,8 +74,20 @@ if data is None:
 
 # --- TOP METRIC SECTION ---
 predicted_label = data.get("predicted_label", "Waiting...")
-timestamp = data.get("timestamp", "N/A")
-raw_curve = data.get("raw_curve", [])
+raw_timestamp = data.get("timestamp", "")
+
+try:
+    # Convert ISO string to datetime
+    dt = datetime.fromisoformat(raw_timestamp)
+
+    # Convert to Egypt time
+    egypt_time = dt.astimezone(ZoneInfo("Africa/Cairo"))
+
+    # Nice readable format
+    timestamp = egypt_time.strftime("%d %b %Y • %I:%M:%S %p")
+
+except:
+    timestamp = raw_timestampraw_curve = data.get("raw_curve", [])
 
 # Determine color based on prediction
 color_class = "good-text" if predicted_label == "Good" else "bad-text" if predicted_label == "Bad" else ""
