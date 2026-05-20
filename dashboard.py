@@ -88,6 +88,7 @@ try:
 
 except:
     timestamp = raw_timestampraw_curve = data.get("raw_curve", [])
+
 raw_curve = data.get("raw_curve", [])
 # Determine color based on prediction
 color_class = "good-text" if predicted_label == "Good" else "bad-text" if predicted_label == "Bad" else ""
@@ -165,36 +166,38 @@ st.subheader("📜 Recent Scan History")
 history = data.get("history", [])
 
 if history:
-    # Create a clean table-like view using Streamlit columns
     # Header
     hcol1, hcol2 = st.columns([1, 2])
     hcol1.markdown("**Result**")
     hcol2.markdown("**Time**")
     st.divider()
-    
+
     for item in history:
         col1, col2 = st.columns([1, 2])
-    
-        # Style the result (Good/Bad)
+
+        # Result color
         res = item.get("prediction", "N/A")
         color = "green" if res == "Good" else "red"
         col1.markdown(f":{color}[{res}]")
-        raw_timestamp = data.get("timestamp", "")
-    
-    try:
-        # Convert ISO string to datetime
-        dt = datetime.fromisoformat(raw_timestamp)
-    
-        # Convert to Egypt time
-        egypt_time = dt.astimezone(ZoneInfo("Africa/Cairo"))
-    
-        # Nice readable format
-        timestamp = egypt_time.strftime("%d %b %Y • %I:%M:%S %p")
-    
-    except:
-        timestamp = raw_timestampraw_curve = data.get("raw_curve", [])
-    
-        col2.write(timestamp)
+
+        # Get timestamp from EACH history item
+        raw_timestamp = item.get("timestamp", "")
+
+        try:
+            # Convert ISO string to datetime
+            dt = datetime.fromisoformat(raw_timestamp)
+
+            # Convert to Egypt timezone
+            egypt_time = dt.astimezone(ZoneInfo("Africa/Cairo"))
+
+            # Format nicely
+            formatted_time = egypt_time.strftime("%d %b %Y • %I:%M:%S %p")
+
+        except:
+            formatted_time = raw_timestamp
+
+        col2.write(formatted_time)
+
 else:
     st.info("No scan history available yet.")
 
