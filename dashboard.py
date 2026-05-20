@@ -181,13 +181,13 @@ if history:
         col1.markdown(f":{color}[{res}]")
     
         # Format the time to be readable (HH:mm:ss)
-        raw_time = item.get("timestamp", "")
-        try:
-            clean_time = raw_time.split("T")[1].split(".")[0]
-        except:
-            clean_time = raw_time
+        #raw_time = item.get("timestamp", "")
+        #try:
+        #    clean_time = raw_time.split("T")[1].split(".")[0]
+        #except:
+        #    clean_time = raw_time
     
-        col2.write(clean_time)
+        col2.write(timestamp)
 else:
     st.info("No scan history available yet.")
 
