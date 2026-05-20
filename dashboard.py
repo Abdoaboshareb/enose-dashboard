@@ -47,9 +47,9 @@ with st.sidebar:
             # Replace URL with your actual HF URL
             resp = requests.post("https://abdulrahman-266-enose-api.hf.space/trigger_scan")
             if resp.status_code == 200:
-                st.success("Scan command sent!")
+                st.toast("Scan command sent!")
             else:
-                st.error("Failed to send command.")
+                st.toast("Failed to send command.")
         except Exception as e:
             st.error(f"Error: {e}")
             
