@@ -184,7 +184,7 @@ if history:
         raw_time = item.get("timestamp", "")
         try:
             clean_time = raw_time.split("T")[1].split(".")[0]
-        #except:
+        except:
             clean_time = raw_time
     
         col2.write(clean_time)
