@@ -179,15 +179,22 @@ if history:
         res = item.get("prediction", "N/A")
         color = "green" if res == "Good" else "red"
         col1.markdown(f":{color}[{res}]")
+        raw_timestamp = data.get("timestamp", "")
     
-        # Format the time to be readable (HH:mm:ss)
-        raw_time = item.get("timestamp", "")
-        try:
-            clean_time = raw_time.split("T")[1].split(".")[0]
-        except:
-            clean_time = raw_time
+    try:
+        # Convert ISO string to datetime
+        dt = datetime.fromisoformat(raw_timestamp)
     
-        col2.write(clean_time)
+        # Convert to Egypt time
+        egypt_time = dt.astimezone(ZoneInfo("Africa/Cairo"))
+    
+        # Nice readable format
+        timestamp = egypt_time.strftime("%d %b %Y • %I:%M:%S %p")
+    
+    except:
+        timestamp = raw_timestampraw_curve = data.get("raw_curve", [])
+    
+        col2.write(timestamp)
 else:
     st.info("No scan history available yet.")
 
