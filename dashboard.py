@@ -88,7 +88,7 @@ try:
 
 except:
     timestamp = raw_timestampraw_curve = data.get("raw_curve", [])
-
+raw_curve = data.get("raw_curve", [])
 # Determine color based on prediction
 color_class = "good-text" if predicted_label == "Good" else "bad-text" if predicted_label == "Bad" else ""
 
