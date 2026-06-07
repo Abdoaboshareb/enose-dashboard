@@ -22,6 +22,7 @@ st.set_page_config(
 # Custom Styling for the Prediction Metric
 st.markdown("""
     <style>
+    .neutral-text { color: #FFD700; }
     .prediction-card {
         padding: 20px;
         border-radius: 10px;
@@ -91,8 +92,15 @@ except:
 
 raw_curve = data.get("raw_curve", [])
 # Determine color based on prediction
-color_class = "good-text" if predicted_label == "Good" else "bad-text" if predicted_label == "Bad" else ""
-
+if predicted_label == "Good":
+    color_class = "good-text"
+elif predicted_label == "Neutral":
+    color_class = "neutral-text"
+elif predicted_label == "Bad":
+    color_class = "bad-text"
+else:
+    color_class = ""
+    
 st.markdown(f"""
     <div class="prediction-card">
         <p style="margin:0; color: #888;">LATEST PREDICTED QUALITY</p>
@@ -177,7 +185,14 @@ if history:
 
         # Result color
         res = item.get("prediction", "N/A")
-        color = "green" if res == "Good" else "red"
+        if res == "Good":
+            color = "green"
+        elif res == "Neutral":
+            color = "orange"
+        elif res == "Bad":
+            color = "red"
+        else:
+            color = "gray"
         col1.markdown(f":{color}[{res}]")
 
         # Get timestamp from EACH history item
